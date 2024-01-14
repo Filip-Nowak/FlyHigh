@@ -12,4 +12,6 @@ public class Plane {
     private PlaneType type;
     @OneToMany(mappedBy = "plane")
     private List<Flight> flights;
+    @OneToMany(mappedBy = "plane")
+    private List<Seat> seats;
 }
