@@ -1,10 +1,12 @@
 package org.example.flyhigh.service;
 
+import lombok.AllArgsConstructor;
 import org.example.flyhigh.entity.Flight;
 import org.example.flyhigh.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class FlightService {
     private FlightRepository flightRepository;
     public Flight addFlight(Flight flight) {

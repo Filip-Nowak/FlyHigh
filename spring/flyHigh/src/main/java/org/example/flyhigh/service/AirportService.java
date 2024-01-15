@@ -5,6 +5,8 @@ import org.example.flyhigh.entity.Airport;
 import org.example.flyhigh.repository.AirportRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class AirportService {
@@ -18,5 +20,7 @@ public class AirportService {
     public Airport getAirportByName(String city) {
         return airportRepository.findByCity(city);
     }
-
+    public List<Airport> getAllAirports() {
+        return airportRepository.findAll();
+    }
 }
