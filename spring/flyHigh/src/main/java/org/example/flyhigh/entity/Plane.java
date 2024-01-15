@@ -1,9 +1,7 @@
 package org.example.flyhigh.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,12 +9,17 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Plane {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @ManyToOne
     private PlaneType type;
-    @OneToMany(mappedBy = "plane")
+    @OneToMany(mappedBy = "plane",fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Flight> flights;
+    public void addFlight(Flight flight){
+        flights.add(flight);
+    }
 }
