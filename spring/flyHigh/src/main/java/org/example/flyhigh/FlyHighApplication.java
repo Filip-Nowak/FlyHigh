@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -30,15 +31,24 @@ public class FlyHighApplication {
         return args -> {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
-            loadFlights(flightService, airportService, planeService);
-            Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+            loadFlights2(flightService, airportService, planeService);
+            test(airportService,flightService, planeService);
         };
+    }
+
+    private void test(AirportService airportService,FlightService flightService, PlaneService planeService) {
+        Airport arrival = airportService.getAirportById((long)1);
+        Airport departure = airportService.getAirportById((long)2);
+        LocalDateTime departureTime = LocalDateTime.of(2024, Month.MARCH, 1, 10, 0);
+        LocalDateTime arrivalTime = departureTime.plusHours(1);
+        List<Plane> plane = planeService.test(departureTime, arrivalTime);
+        System.out.println("xd"+plane.get(0));
     }
 
     private void loadFlights(FlightService flightService, AirportService airportService, PlaneService planeService) {
         Random random = new Random();
         List<Airport> airports = airportService.getAllAirports();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 20; i++) {
             System.out.println(i);
             Airport departure = airports.get(random.nextInt(airports.size()));
             Airport arrival = airports.get(random.nextInt(airports.size()));
@@ -60,6 +70,39 @@ public class FlyHighApplication {
             flightService.addFlight(flight);
         }
     }
+
+    private void loadFlights2(FlightService flightService, AirportService airportService, PlaneService planeService) {
+        Random random = new Random();
+        List<Airport> airports = airportService.getAllAirports();
+        for (int i = 0; i < 20; i++) {
+            System.out.println(i);
+            Airport departure = airports.get(random.nextInt(airports.size()));
+            Airport arrival = airports.get(random.nextInt(airports.size()));
+            while (departure.equals(arrival)) {
+                arrival = airports.get(random.nextInt(airports.size()));
+            }
+            LocalDateTime departureTime = LocalDateTime.now().plusDays(random.nextInt(100));
+            LocalDateTime arrivalTime = departureTime.plusHours(random.nextInt(10));
+            //Plane plane = planeService.getAvailablePlane(departureTime, arrivalTime);
+
+            System.out.println("start");
+            List<Plane> planes = planeService.test(departureTime, arrivalTime);
+            System.out.println("end");
+            System.out.println("szie:"+planes.size());
+            if(planes == null)
+                continue;
+            Plane plane = planes.get(random.nextInt(planes.size()));
+            Flight flight = Flight.builder()
+                    .departure(departure)
+                    .arrival(arrival)
+                    .departureTime(departureTime)
+                    .arrivalTime(arrivalTime)
+                    .plane(plane)
+                    .build();
+            flightService.addFlight(flight);
+        }
+    }
+
 
     private void loadPlanes(PlaneService planeService, PlaneTypeRepository planeTypeRepository) {
 
