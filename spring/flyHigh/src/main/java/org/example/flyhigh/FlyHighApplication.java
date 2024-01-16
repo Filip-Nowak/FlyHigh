@@ -39,7 +39,7 @@ public class FlyHighApplication {
         Random random = new Random();
         List<Airport> airports = airportService.getAllAirports();
         List<Plane> planes = planeService.getAllPlanes();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 20; i++) {
             System.out.println(i);
             Airport departure = airports.get(random.nextInt(airports.size()));
             Airport arrival = airports.get(random.nextInt(airports.size()));
@@ -49,8 +49,6 @@ public class FlyHighApplication {
             LocalDateTime departureTime = LocalDateTime.now().plusDays(random.nextInt(100));
             LocalDateTime arrivalTime = departureTime.plusHours(random.nextInt(10));
             Plane plane = planes.get(random.nextInt(planes.size()));
-            if(plane == null)
-                continue;
             Flight flight = Flight.builder()
                     .departure(departure)
                     .arrival(arrival)
@@ -58,6 +56,8 @@ public class FlyHighApplication {
                     .arrivalTime(arrivalTime)
                     .plane(plane)
                     .build();
+            List<Seat> seats = new LinkedList<>();
+            flight.setSeats(seats);
             flightService.addFlight(flight);
         }
     }

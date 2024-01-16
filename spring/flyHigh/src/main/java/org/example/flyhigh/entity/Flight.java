@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -25,5 +26,6 @@ public class Flight {
     private LocalDateTime arrivalTime;
     @ManyToOne
     private Plane plane;
-
+    @OneToMany(mappedBy = "flight",fetch = FetchType.EAGER)
+    private List<Seat> seats;
 }

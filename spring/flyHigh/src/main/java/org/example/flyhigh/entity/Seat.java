@@ -20,6 +20,6 @@ public class Seat {
     private SeatClass seatClass;
     private boolean isAvailable;
     @ManyToOne
-    private Plane plane;
+    private Flight flight;
 
 }
