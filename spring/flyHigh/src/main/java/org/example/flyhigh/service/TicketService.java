@@ -5,6 +5,7 @@ import org.example.flyhigh.entity.Flight;
 import org.example.flyhigh.entity.Seat;
 import org.example.flyhigh.entity.user.Ticket;
 import org.example.flyhigh.entity.user.UserProfile;
+import org.example.flyhigh.repository.SeatRepository;
 import org.example.flyhigh.repository.TicketRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +17,31 @@ import java.util.List;
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final SeatService seatService;
-    public void saveTicket(List<Integer> seatNumbers, UserProfile user, Flight flight){
+    private final SeatRepository seatRepository;
+    public Ticket saveTicket(List<Integer> seatNumbers, UserProfile user, Flight flight){
         List<Seat> seats = seatService.getSeatsByNumbers(seatNumbers,flight);
         if(seats.size()!=seatNumbers.size()){
             throw new RuntimeException("Seats not found");
         }
+        for(Seat seat:seats){
+            if(seat.getTicket()!=null){
+                throw new RuntimeException("Seat is already taken");
+            }
+        }
         Ticket ticket = Ticket.builder()
                 .user(user)
                 .price(0)
-                .seats(seats)
                 .build();
 
         double price = 0;
+        Ticket savedTicket=ticketRepository.save(ticket);
         for (Seat seat : seats) {
             price+=seat.getPrice();
-            seat.setTicket(ticket);
+            seat.setTicket(savedTicket);
+            seatRepository.save(seat);
         }
+        ticket.setSeats(seats);
         ticket.setPrice(price);
-        ticketRepository.save(ticket);
+        return ticketRepository.save(ticket);
     }
 }

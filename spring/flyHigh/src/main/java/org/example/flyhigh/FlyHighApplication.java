@@ -2,14 +2,12 @@ package org.example.flyhigh;
 
 import org.example.flyhigh.entity.*;
 import org.example.flyhigh.entity.user.Role;
+import org.example.flyhigh.entity.user.Ticket;
 import org.example.flyhigh.entity.user.User;
 import org.example.flyhigh.entity.user.UserProfile;
 import org.example.flyhigh.repository.PlaneTypeRepository;
 import org.example.flyhigh.repository.RoleRepository;
-import org.example.flyhigh.service.AirportService;
-import org.example.flyhigh.service.FlightService;
-import org.example.flyhigh.service.PlaneService;
-import org.example.flyhigh.service.UserService;
+import org.example.flyhigh.service.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,14 +28,26 @@ public class FlyHighApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(RoleRepository roleRepository,AirportService airportService, PlaneService planeService, PlaneTypeRepository planeTypeRepository, FlightService flightService, UserService userService) {
+    CommandLineRunner commandLineRunner(TicketService ticketService,RoleRepository roleRepository,AirportService airportService, PlaneService planeService, PlaneTypeRepository planeTypeRepository, FlightService flightService, UserService userService) {
         return args -> {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
             loadUsers(userService,roleRepository);
             loadFlights(flightService, airportService, planeService);
+            loadTickets(ticketService,userService, flightService);
             //Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         };
+    }
+
+    private void loadTickets(TicketService ticketService,UserService userService, FlightService flightService) {
+        User user = (User) userService.loadUserByUsername("user");
+        Flight flight = flightService.getAllFlights().get(0);
+        List<Integer> seatNumbers = new LinkedList<>();
+        seatNumbers.add(1);
+        seatNumbers.add(2);
+        seatNumbers.add(3);
+        Ticket ticket=ticketService.saveTicket(seatNumbers,user.getUserProfile(),flight);
+
     }
 
     private void loadUsers(UserService userService, RoleRepository roleRepository){

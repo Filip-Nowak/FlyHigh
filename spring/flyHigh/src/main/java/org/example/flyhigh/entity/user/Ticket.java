@@ -21,7 +21,7 @@ public class Ticket {
     private long id;
     @ManyToOne
     private UserProfile user;
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Seat> seats;
     private double price;
 }
