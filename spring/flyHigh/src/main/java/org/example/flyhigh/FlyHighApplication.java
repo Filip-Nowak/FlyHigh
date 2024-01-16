@@ -1,11 +1,15 @@
 package org.example.flyhigh;
 
 import org.example.flyhigh.entity.*;
-import org.example.flyhigh.enums.SeatClass;
+import org.example.flyhigh.entity.user.Role;
+import org.example.flyhigh.entity.user.User;
+import org.example.flyhigh.entity.user.UserProfile;
 import org.example.flyhigh.repository.PlaneTypeRepository;
+import org.example.flyhigh.repository.RoleRepository;
 import org.example.flyhigh.service.AirportService;
 import org.example.flyhigh.service.FlightService;
 import org.example.flyhigh.service.PlaneService;
+import org.example.flyhigh.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,13 +30,29 @@ public class FlyHighApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(AirportService airportService, PlaneService planeService, PlaneTypeRepository planeTypeRepository, FlightService flightService){
+    CommandLineRunner commandLineRunner(RoleRepository roleRepository,AirportService airportService, PlaneService planeService, PlaneTypeRepository planeTypeRepository, FlightService flightService, UserService userService) {
         return args -> {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
-            //loadFlights(flightService, airportService, planeService);
-            Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+            loadUsers(userService,roleRepository);
+            loadFlights(flightService, airportService, planeService);
+            //Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         };
+    }
+
+    private void loadUsers(UserService userService, RoleRepository roleRepository){
+        roleRepository.save(Role.builder()
+                .name("USER")
+                .build());
+        User user=User.builder()
+                .username("user")
+                .password("user")
+                .build();
+        UserProfile userProfile = UserProfile.builder()
+                .user(user)
+                .build();
+        user.setUserProfile(userProfile);
+        userService.saveUser(user);
     }
 
     private void loadFlights(FlightService flightService, AirportService airportService, PlaneService planeService) {
