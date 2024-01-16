@@ -16,6 +16,8 @@ public class User implements UserDetails {
     private long id;
     private String username;
     private String password;
+    @OneToOne
+    private UserProfile userProfile;
     @ManyToMany
     @JoinTable(
             name = "user_role",

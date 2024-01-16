@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.flyhigh.entity.user.Ticket;
 import org.example.flyhigh.enums.SeatClass;
 
 @Entity
@@ -18,8 +19,10 @@ public class Seat {
     private long id;
     private int seatNumber;
     private SeatClass seatClass;
-    private boolean isAvailable;
+    @ManyToOne
+    private Ticket ticket;
     @ManyToOne
     private Flight flight;
+    private double price;
 
 }

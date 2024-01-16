@@ -2,6 +2,8 @@ package org.example.flyhigh.entity.user;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class UserProfile {
     @Id
@@ -10,4 +12,6 @@ public class UserProfile {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToMany(mappedBy = "userProfile")
+    private List<Ticket> tickets;
 }
