@@ -30,7 +30,7 @@ public class FlyHighApplication {
         return args -> {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
-            loadFlights(flightService, airportService, planeService);
+            //loadFlights(flightService, airportService, planeService);
             Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         };
     }
