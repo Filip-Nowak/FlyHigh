@@ -5,6 +5,7 @@ import org.example.flyhigh.entity.Flight;
 import org.example.flyhigh.entity.Seat;
 import org.example.flyhigh.entity.user.Ticket;
 import org.example.flyhigh.entity.user.UserProfile;
+import org.example.flyhigh.enums.SeatClass;
 import org.example.flyhigh.repository.SeatRepository;
 import org.example.flyhigh.repository.TicketRepository;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,12 @@ public class TicketService {
         double price = 0;
         Ticket savedTicket=ticketRepository.save(ticket);
         for (Seat seat : seats) {
-            price+=seat.getPrice();
+            if(seat.getSeatClass()== SeatClass.ECONOMY)
+                price+=flight.getEconomyPrice();
+            else if(seat.getSeatClass()== SeatClass.BUSINESS)
+                price+=flight.getBusinessPrice();
+            else if(seat.getSeatClass()== SeatClass.FIRST)
+                price+=flight.getFirstPrice();
             seat.setTicket(savedTicket);
             seatRepository.save(seat);
         }

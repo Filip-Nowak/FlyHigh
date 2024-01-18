@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Math.round;
 import static org.example.flyhigh.constants.Constants.*;
 
 @SpringBootApplication
@@ -79,12 +80,18 @@ public class FlyHighApplication {
             LocalDateTime departureTime = LocalDateTime.now().plusDays(random.nextInt(100));
             LocalDateTime arrivalTime = departureTime.plusHours(random.nextInt(10));
             Plane plane = planes.get(random.nextInt(planes.size()));
+            double economyPrice = round(random.nextDouble(70,100));
+            double businessPrice = round(random.nextDouble(100,200));
+            double firstPrice = round(random.nextDouble(200,300));
             Flight flight = Flight.builder()
                     .departure(departure)
                     .arrival(arrival)
                     .departureTime(departureTime)
                     .arrivalTime(arrivalTime)
                     .plane(plane)
+                    .economyPrice(economyPrice)
+                    .businessPrice(businessPrice)
+                    .firstPrice(firstPrice)
                     .build();
             List<Seat> seats = new LinkedList<>();
             flight.setSeats(seats);

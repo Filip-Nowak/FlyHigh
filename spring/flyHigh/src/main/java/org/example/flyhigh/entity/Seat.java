@@ -23,6 +23,4 @@ public class Seat {
     private Ticket ticket;
     @ManyToOne
     private Flight flight;
-    private double price;
-
 }

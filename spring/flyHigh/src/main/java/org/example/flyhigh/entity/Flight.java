@@ -28,4 +28,7 @@ public class Flight {
     private Plane plane;
     @OneToMany(mappedBy = "flight",fetch = FetchType.EAGER)
     private List<Seat> seats;
+    private double economyPrice;
+    private double businessPrice;
+    private double firstPrice;
 }
