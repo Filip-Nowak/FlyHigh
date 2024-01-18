@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -43,5 +44,8 @@ public class PlaneService {
 
 return null;
 
+    }
+    public Optional<Plane> getPlaneById(Long id) {
+        return planeRepository.findById(id);
     }
 }

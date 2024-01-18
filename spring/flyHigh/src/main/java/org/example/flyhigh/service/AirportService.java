@@ -6,6 +6,7 @@ import org.example.flyhigh.repository.AirportRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -14,10 +15,10 @@ public class AirportService {
     public Airport addAirport(Airport airport) {
         return airportRepository.save(airport);
     }
-    public Airport getAirportById(Long id) {
-        return airportRepository.findById(id).orElse(null);
+    public Optional<Airport> getAirportById(Long id) {
+        return airportRepository.findById(id);
     }
-    public Airport getAirportByName(String city) {
+    public Optional<Airport> getAirportByName(String city) {
         return airportRepository.findByCity(city);
     }
     public List<Airport> getAllAirports() {

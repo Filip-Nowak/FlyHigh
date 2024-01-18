@@ -34,8 +34,8 @@ public class FlyHighApplication {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
             loadUsers(userService,roleRepository);
-            loadFlights(flightService, airportService, planeService);
-            loadTickets(ticketService,userService, flightService);
+            //loadFlights(flightService, airportService, planeService);
+            //loadTickets(ticketService,userService, flightService);
             //Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
         };
     }

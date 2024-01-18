@@ -1,10 +1,7 @@
 package org.example.flyhigh.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.example.flyhigh.entity.user.Ticket;
 import org.example.flyhigh.enums.SeatClass;
 
@@ -20,7 +17,9 @@ public class Seat {
     private int seatNumber;
     private SeatClass seatClass;
     @ManyToOne
+    @ToString.Exclude
     private Ticket ticket;
+    @ToString.Exclude
     @ManyToOne
     private Flight flight;
 }

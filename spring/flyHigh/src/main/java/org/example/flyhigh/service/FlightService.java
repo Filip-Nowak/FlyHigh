@@ -17,36 +17,12 @@ public class FlightService {
     private FlightRepository flightRepository;
     private SeatRepository seatRepository;
     public Flight addFlight(Flight flightToSave) {
-        Flight flight = flightRepository.save(flightToSave);
-        Plane plane = flight.getPlane();
-        List<Seat> seats = flight.getSeats();
-        int seatCounter = 1;
-        for (int j = 0; j < plane.getType().getBusinessCapacity(); j++) {
-            seats.add(Seat.builder()
-                    .seatClass(SeatClass.BUSINESS)
-                    .flight(flight)
-                    .seatNumber(seatCounter++)
-                    .build());
-            seatRepository.save(seats.get(seats.size()-1));
+        Flight flight= flightRepository.save(flightToSave);
+        for(Seat seat:flight.getSeats()){
+            seat.setFlight(flight);
+            seatRepository.save(seat);
         }
-        for (int j = 0; j < plane.getType().getEconomyCapacity(); j++) {
-            seats.add(Seat.builder()
-                    .seatClass(SeatClass.ECONOMY)
-                    .flight(flight)
-                    .seatNumber(seatCounter++)
-                    .build());
-            seatRepository.save(seats.get(seats.size()-1));
-        }
-        for (int j = 0; j < plane.getType().getFirstCapacity(); j++) {
-            seats.add(Seat.builder()
-                    .seatClass(SeatClass.FIRST)
-                    .flight(flight)
-                    .seatNumber(seatCounter++)
-                    .build());
-            seatRepository.save(seats.get(seats.size()-1));
-        }
-
-        return flight;
+        return flightRepository.findById(flight.getId()).orElse(null);
     }
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
