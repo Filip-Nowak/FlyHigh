@@ -35,19 +35,7 @@ public class FlightRestController {
     public List<FlightInfoModel> getFlights()
     {
         List<Flight> flights = flightService.getAllFlights();
-        List<FlightInfoModel> flightInfoModels = new LinkedList<>();
-        for(Flight flight:flights){
-            flightInfoModels.add(FlightInfoModel.builder()
-                    .arrival(flight.getArrival().getCity())
-                    .departure(flight.getDeparture().getCity())
-                    .arrivalTime(flight.getArrivalTime())
-                    .departureTime(flight.getDepartureTime())
-                    .businessPrice(flight.getBusinessPrice())
-                    .economyPrice(flight.getEconomyPrice())
-                    .firstPrice(flight.getFirstPrice())
-                    .build());
-        }
-        return flightInfoModels;
+        return Flight.toFlightInfoModelList(flights);
     }
     @PostMapping("flight")
     public ResponseEntity<AddedFlightModel> addFlight(@Valid @RequestBody AddFlightRequest flightRequest){
@@ -110,30 +98,7 @@ public class FlightRestController {
         Flight savedFlight= flightService.addFlight(flight);
         plane.addFlight(savedFlight);
         planeService.addPlane(plane);
-        List<AddedSeatModel> addedSeatModels = new LinkedList<>();
-        for(Seat seat:savedFlight.getSeats()){
-            System.out.println(seat);
-            System.out.println(seat.getId());
-            long id = seat.getId();
-            addedSeatModels.add(AddedSeatModel.builder()
-                    .seatNumber(seat.getSeatNumber())
-                    .seatClass(seat.getSeatClass())
-                    .build());
-            System.out.println(id);
-            addedSeatModels.get(addedSeatModels.size()-1).setId(id);
-        }
-        AddedFlightModel addedFlightModel = AddedFlightModel.builder()
-                .id(savedFlight.getId())
-                .arrival(savedFlight.getArrival().getCity())
-                .departure(savedFlight.getDeparture().getCity())
-                .arrivalTime(savedFlight.getArrivalTime())
-                .departureTime(savedFlight.getDepartureTime())
-                .businessPrice(savedFlight.getBusinessPrice())
-                .economyPrice(savedFlight.getEconomyPrice())
-                .firstPrice(savedFlight.getFirstPrice())
-                .planeId(savedFlight.getPlane().getId())
-                .seats(addedSeatModels)
-                .build();
+        AddedFlightModel addedFlightModel = savedFlight.toAddedFlightModel();
         return ResponseEntity.ok(addedFlightModel);
     }
 

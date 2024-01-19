@@ -22,13 +22,7 @@ public class AirportRestController {
     @GetMapping("airports")
     public ResponseEntity<List<AirportInfoModel>> getAirports() {
         List<Airport> airports = airportService.getAllAirports();
-        List<AirportInfoModel> models = new LinkedList<>();
-        for (Airport airport : airports) {
-            models.add(AirportInfoModel.builder()
-                    .city(airport.getCity())
-                    .build());
-        }
-        return ResponseEntity.ok(models);
+        return ResponseEntity.ok(Airport.toAirportInfoModels(airports));
     }
 
     @PostMapping("airport")
@@ -37,9 +31,6 @@ public class AirportRestController {
                 .city(airportRequest.getCity())
                 .build();
         Airport airport = airportService.addAirport(airportToAdd);
-        return ResponseEntity.ok(AddedAirportModel.builder()
-                .id(airport.getId())
-                .city(airport.getCity())
-                .build());
+        return ResponseEntity.ok(airport.toAddedAirportModel());
     }
 }

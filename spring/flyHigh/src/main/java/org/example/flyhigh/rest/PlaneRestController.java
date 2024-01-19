@@ -27,14 +27,7 @@ public class PlaneRestController {
     @GetMapping("planes")
     public ResponseEntity<List<PlaneInfoModel>> getPanes() {
         List<Plane> planes = planeService.getAllPlanes();
-        List<PlaneInfoModel> models = new LinkedList<>();
-        for (Plane plane : planes) {
-            models.add(PlaneInfoModel.builder()
-                    .id(plane.getId())
-                    .model(plane.getType().getName())
-                    .build());
-        }
-        return ResponseEntity.ok(models);
+        return ResponseEntity.ok(Plane.toPlaneInfoModelList(planes));
     }
     @PostMapping("plane")
     public ResponseEntity<Plane> addPlane(@Valid @RequestBody AddPlaneRequest planeRequest){

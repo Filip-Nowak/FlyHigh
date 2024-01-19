@@ -8,7 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.flyhigh.model.airport.AddedAirportModel;
+import org.example.flyhigh.model.airport.AirportInfoModel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -21,4 +24,23 @@ public class Airport {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String city;
+    public AirportInfoModel toAirportInfoModel(){
+        return AirportInfoModel.builder()
+                .city(city)
+                .build();
+    }
+    public AddedAirportModel toAddedAirportModel(){
+        return AddedAirportModel.builder()
+                .id(id)
+                .city(city)
+                .build();
+    }
+    public static List<AirportInfoModel> toAirportInfoModels(List<Airport> airports){
+        List<AirportInfoModel> airportInfoModels = new LinkedList<>();
+        for(Airport airport:airports){
+            airportInfoModels.add(airport.toAirportInfoModel());
+
+        }
+        return airportInfoModels;
+    }
 }
