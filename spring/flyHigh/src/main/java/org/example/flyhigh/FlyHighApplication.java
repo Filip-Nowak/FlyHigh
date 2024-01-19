@@ -37,6 +37,7 @@ public class FlyHighApplication {
             //loadFlights(flightService, airportService, planeService);
             //loadTickets(ticketService,userService, flightService);
             //Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+            System.out.println("Ready");
         };
     }
 

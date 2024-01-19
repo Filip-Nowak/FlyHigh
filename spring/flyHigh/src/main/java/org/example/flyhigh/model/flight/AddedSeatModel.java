@@ -1,4 +1,4 @@
-package org.example.flyhigh.model;
+package org.example.flyhigh.model.flight;
 
 import lombok.Builder;
 import lombok.Data;

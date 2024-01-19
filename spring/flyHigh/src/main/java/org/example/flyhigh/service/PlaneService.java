@@ -3,7 +3,9 @@ package org.example.flyhigh.service;
 import lombok.AllArgsConstructor;
 import org.example.flyhigh.entity.Flight;
 import org.example.flyhigh.entity.Plane;
+import org.example.flyhigh.entity.PlaneType;
 import org.example.flyhigh.repository.PlaneRepository;
+import org.example.flyhigh.repository.PlaneTypeRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PlaneService {
     private PlaneRepository planeRepository;
+    private final PlaneTypeRepository planeTypeRepository;
     public Plane addPlane(Plane plane) {
         return planeRepository.save(plane);
     }
@@ -47,5 +50,8 @@ return null;
     }
     public Optional<Plane> getPlaneById(Long id) {
         return planeRepository.findById(id);
+    }
+    public Optional<PlaneType> getPlaneTypeByName(String name) {
+        return planeTypeRepository.findByName(name);
     }
 }

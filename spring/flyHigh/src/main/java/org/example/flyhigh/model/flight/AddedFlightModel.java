@@ -1,18 +1,22 @@
-package org.example.flyhigh.model;
+package org.example.flyhigh.model.flight;
 
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 @Data
-public class AddFlightRequest {
+@Builder
+public class AddedFlightModel {
+    private long id;
     private String departure;
     private String arrival;
-    private String departureTime;
-    private String arrivalTime;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
     private long planeId;
     private double economyPrice;
     private double businessPrice;
     private double firstPrice;
+    private List<AddedSeatModel> seats;
+
 }
