@@ -1,5 +1,6 @@
 package org.example.flyhigh.rest;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.flyhigh.entity.Plane;
 import org.example.flyhigh.entity.PlaneType;
@@ -36,7 +37,7 @@ public class PlaneRestController {
         return ResponseEntity.ok(models);
     }
     @PostMapping("plane")
-    public ResponseEntity<Plane> addPlane(@RequestBody AddPlaneRequest planeRequest){
+    public ResponseEntity<Plane> addPlane(@Valid @RequestBody AddPlaneRequest planeRequest){
         System.out.println("dziala");
         Optional<PlaneType> optionalPlaneType= planeService.getPlaneTypeByName(planeRequest.getModel());
         if(optionalPlaneType.isEmpty()){

@@ -1,5 +1,6 @@
 package org.example.flyhigh.rest;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.flyhigh.entity.Airport;
 import org.example.flyhigh.entity.Flight;
@@ -48,7 +49,7 @@ public class FlightRestController {
         return flightInfoModels;
     }
     @PostMapping("flight")
-    public ResponseEntity<AddedFlightModel> addFlight(@RequestBody AddFlightRequest flightRequest){
+    public ResponseEntity<AddedFlightModel> addFlight(@Valid @RequestBody AddFlightRequest flightRequest){
         System.out.println("XDDDD");
         Optional<Airport> optionalDeparture = airportService.getAirportByName(flightRequest.getDeparture());
         if(optionalDeparture.isEmpty()){
@@ -69,6 +70,9 @@ public class FlightRestController {
         DateTimeFormatter formatter= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime arrivalTime = LocalDateTime.parse(flightRequest.getArrivalTime(),formatter);
         LocalDateTime departureTime = LocalDateTime.parse(flightRequest.getDepartureTime(),formatter);
+        if(arrivalTime.isBefore(departureTime)){
+            return ResponseEntity.badRequest().build();
+        }
         Flight flight = Flight.builder()
                 .arrivalTime(arrivalTime)
                 .departureTime(departureTime)
