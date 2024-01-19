@@ -34,7 +34,7 @@ public class FlyHighApplication {
             loadAirports(airportService);
             loadPlanes(planeService, planeTypeRepository);
             loadUsers(userService,roleRepository);
-            //loadFlights(flightService, airportService, planeService);
+            loadFlights(flightService, airportService, planeService);
             //loadTickets(ticketService,userService, flightService);
             //Plane plane = planeService.getAvailablePlane(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
             System.out.println("Ready");
@@ -71,7 +71,7 @@ public class FlyHighApplication {
         Random random = new Random();
         List<Airport> airports = airportService.getAllAirports();
         List<Plane> planes = planeService.getAllPlanes();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 3; i++) {
             System.out.println(i);
             Airport departure = airports.get(random.nextInt(airports.size()));
             Airport arrival = airports.get(random.nextInt(airports.size()));

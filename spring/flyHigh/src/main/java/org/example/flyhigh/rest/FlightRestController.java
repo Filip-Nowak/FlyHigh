@@ -17,6 +17,7 @@ import org.example.flyhigh.service.PlaneService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -134,5 +135,27 @@ public class FlightRestController {
                 .seats(addedSeatModels)
                 .build();
         return ResponseEntity.ok(addedFlightModel);
+    }
+
+    @GetMapping("flights/search")
+    public ResponseEntity<List<FlightInfoModel>> searchFlights(
+            @RequestParam("departure") Optional<String> departure,
+            @RequestParam("arrival") Optional<String> arrival,
+            @RequestParam("date") Optional<LocalDate> date
+            ){
+        List<Flight> flights = flightService.searchFlights(departure,arrival,date);
+        List<FlightInfoModel> flightInfoModels = new LinkedList<>();
+        for(Flight flight:flights){
+            flightInfoModels.add(FlightInfoModel.builder()
+                    .arrival(flight.getArrival().getCity())
+                    .departure(flight.getDeparture().getCity())
+                    .arrivalTime(flight.getArrivalTime())
+                    .departureTime(flight.getDepartureTime())
+                    .businessPrice(flight.getBusinessPrice())
+                    .economyPrice(flight.getEconomyPrice())
+                    .firstPrice(flight.getFirstPrice())
+                    .build());
+        }
+        return ResponseEntity.ok(flightInfoModels);
     }
 }
